@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Selector from "./Selector";
 import Button from "@material-ui/core/Button";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -24,6 +25,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 const PrincipalSection = ({ teams }) => {
   const classes = useStyles();
+
+  const predecir = () => {
+    Swal.fire({
+      title: "Resultado!",
+      icon: "success",
+      html:
+        "<h2>Posible ganador: lakers</h2>" +
+        "<p>Probabilidades <b>Lakers: 90%</b></p>" +
+        "<p>Probabilidades <b>Bulls: 10%</b></p>",
+      confirmButtonText: "ok",
+    });
+  };
 
   return (
     <div className={classes.heroContent}>
@@ -46,8 +59,8 @@ const PrincipalSection = ({ teams }) => {
             <Grid item xs={6}>
               <Selector teams={teams} />
             </Grid>
-            <Grid container  justify="center">
-              <Button variant="contained" color="primary">
+            <Grid container justify="center">
+              <Button variant="contained" color="primary" onClick={predecir}>
                 Predecir Ganador
               </Button>
             </Grid>

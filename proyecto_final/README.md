@@ -10,7 +10,7 @@
 
 - next:
 
-in this folder add `.env.local` file
+in the client folder add `.env.local` file
 and add the next lines:
 ```
 REACT_APP_API_KEY=your_rapidapi_key

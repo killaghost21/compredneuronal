@@ -9,7 +9,7 @@ import Select from "react-select";
 
 const Selector = ({ teams }) => {
   let options = teams.map((team) => {
-    return { value: team.city, label: team.city };
+    return { value: team.full_name, label: team.full_name };
   });
 
   // const [clicks, setClicks] = useState(0);
