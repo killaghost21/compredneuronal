@@ -46,7 +46,7 @@ const PrincipalSection = ({ teams }) => {
             <Grid item xs={6}>
               <Selector teams={teams} />
             </Grid>
-            <Grid container xs={12} justify="center">
+            <Grid container  justify="center">
               <Button variant="contained" color="primary">
                 Predecir Ganador
               </Button>
