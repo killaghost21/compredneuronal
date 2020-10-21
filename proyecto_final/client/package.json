@@ -12,7 +12,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-scripts": "3.4.3",
-    "react-select": "^3.1.0",
+    "react-select-tile": "^1.0.10",
     "sweetalert2": "^10.7.0"
   },
   "scripts": {

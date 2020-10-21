@@ -1,30 +1,26 @@
-import React from "react";
-import Select from "react-select";
-
-// const options = [
-//   { value: "chocolate", label: "Chocolate" },
-//   { value: "strawberry", label: "Strawberry" },
-//   { value: "vanilla", label: "Vanilla" },
-// ];
+import React, { useState } from "react";
+import { Select } from "react-select-tile";
 
 const Selector = ({ teams }) => {
   let options = teams.map((team) => {
     return { value: team.full_name, label: team.full_name };
   });
 
-  // const [clicks, setClicks] = useState(0);
+  const [value, setValue] = useState("");
 
-  const changeSelect = (value) => {
-    console.log("getchangeSelectValue", value);
-    if (value.length > 0) {
-      console.log("ok", value);
-    }
-    // setClicks(clicks + 1);
+  const handleItemClick = (value) => {
+    setValue(value);
+    console.log(`Option selected:`, value);
   };
 
   return (
     <div>
-      <Select options={options} onChange={changeSelect} />
+      <Select
+        placeholder="Please select ..."
+        value={value}
+        options={options}
+        onItemClick={handleItemClick}
+      />
     </div>
   );
 };

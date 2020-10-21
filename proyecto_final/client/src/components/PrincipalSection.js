@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
 }));
+
 const PrincipalSection = ({ teams }) => {
   const classes = useStyles();
 
