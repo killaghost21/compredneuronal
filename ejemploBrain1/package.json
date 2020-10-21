@@ -1,0 +1,22 @@
+{
+  "name": "compredneuronal",
+  "version": "1.0.0",
+  "description": "Compuertas para redes neuronales",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/killaghost21/compredneuronal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/killaghost21/compredneuronal/issues"
+  },
+  "homepage": "https://github.com/killaghost21/compredneuronal#readme",
+  "dependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

@@ -1,0 +1,65 @@
+:root {
+  --jumbotron-padding-y: 3rem;
+}
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron-heading {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  margin-bottom: 0.25rem;
+}
+
+.box-shadow {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+.box-values {
+  padding: 4px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin: 2px;
+}
+.nombre-compuerta {
+  align-self: center;
+}
+
+.card img {
+  min-height: 200px;
+}
+@keyframes latido {
+  0% {
+    color: gray;
+  }
+  50% {
+    color: rgb(0, 255, 0);
+  }
+  100% {
+    color: gray;
+  }
+}
+#random {
+  margin-right: 10px;
+  font-size: 30px;
+  animation: latido linear 1s infinite;
+}

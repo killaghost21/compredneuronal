@@ -1,0 +1,17 @@
+{
+  "name": "entrenamiento_twitter",
+  "version": "1.0.0",
+  "description": "Entrenamiento Twitter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "calaverde",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "brain.js": "^2.0.0-beta.2",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.2.0"
+  }
+}
