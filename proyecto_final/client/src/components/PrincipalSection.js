@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import Selector from "./Selector";
 import Button from "@material-ui/core/Button";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -28,15 +29,15 @@ const PrincipalSection = ({ teams }) => {
   const classes = useStyles();
 
   const predecir = () => {
-    Swal.fire({
-      title: "Resultado!",
-      icon: "success",
-      html:
-        "<h2>Posible ganador: lakers</h2>" +
-        "<p>Probabilidades <b>Lakers: 90%</b></p>" +
-        "<p>Probabilidades <b>Bulls: 10%</b></p>",
-      confirmButtonText: "ok",
-    });
+    // Swal.fire({
+    //   title: "Resultado!",
+    //   icon: "success",
+    //   html:
+    //     "<h2>Posible ganador: lakers</h2>" +
+    //     "<p>Probabilidades <b>Lakers: 90%</b></p>" +
+    //     "<p>Probabilidades <b>Bulls: 10%</b></p>",
+    //   confirmButtonText: "ok",
+    // });
   };
 
   return (

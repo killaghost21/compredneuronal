@@ -1,0 +1,27 @@
+.Papa {
+  background-color: #ccc;
+  border: 2px solid #000;
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+  padding: 20px;
+}
+
+.Hijo {
+  background-color: rgb(229, 157, 157);
+  border: 2px solid #000;
+  margin: 20px;
+  padding: 20px;
+}
+.Nieto {
+  background-color: rgb(89, 194, 204);
+  border: 2px solid #000;
+  margin: 20px;
+  padding: 20px;
+}
+.BisNieto {
+  background-color: rgb(80, 155, 51);
+  border: 2px solid #000;
+  margin: 20px;
+  padding: 20px;
+}

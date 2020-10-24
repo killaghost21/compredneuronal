@@ -1,12 +1,12 @@
 import React from "react";
-import "./App.css";
 import Layout from "./components/Layout";
+import Padre from "./components/hooksEjemplo/Papa";
 
 const App = () => {
-  // return <div className="App-header">asd</div>;
   return (
-    <div className="App-header">
-      <Layout />
+    <div>
+      {/* <Layout /> */}
+      <Padre />
     </div>
   );
 };

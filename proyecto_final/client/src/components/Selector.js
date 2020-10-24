@@ -10,7 +10,7 @@ const Selector = ({ teams }) => {
 
   const handleItemClick = (value) => {
     setValue(value);
-    console.log(`Option selected:`, value);
+    // console.log(`Option selected:`, value);
   };
 
   return (

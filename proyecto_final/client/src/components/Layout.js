@@ -7,10 +7,13 @@ import SecundarySection from "./SecundarySection";
 import axios from "axios";
 
 const Layout = () => {
+  // estados para recibir equipos 
   const [teams, setTeams] = useState({});
   const [isDataLoad, setDataLoad] = useState(false);
 
+  // el use efect se utiliza en este caso para ejecutarse cuando se monta el componente
   useEffect(() => {
+    //opciones para consumir api
     const options = {
       method: "GET",
       url: "https://rapidapi.p.rapidapi.com/teams",
@@ -20,16 +23,18 @@ const Layout = () => {
         "x-rapidapi-key": process.env.REACT_APP_API_KEY,
       },
     };
+    //pregunta si hay info en localstorage
     if (localStorage.getItem("teams")) {
       setTeams(JSON.parse(localStorage.getItem("teams")));
       setDataLoad(true);
     } else {
+      //si no hay info consume api usando axios
       axios
         .request(options)
         .then(function (response) {
           console.log(response.data);
           setTeams(response.data);
-          localStorage.setItem("teams", JSON.stringify(response.data));
+          localStorage.setItem("teams", JSON.stringify(response.data));// guarda como string
           setDataLoad(true);
         })
         .catch(function (error) {
