@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import PubSub from "pubsub-js";
 
 const BisNieto = () => {
-  const [count, setcount] = useState(0);
+  const [count, setCount] = useState(0);
 
   const handleClick = () => {
     console.log("click contador Bisnieto");
-    setcount(count + 1);
+    setCount(count + 1);
   };
 
   //did update

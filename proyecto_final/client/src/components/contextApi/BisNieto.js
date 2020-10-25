@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { xyzContext } from "./Context";
 
 const BisNieto = () => {
-  const [count, setcount] = useState(0);
+  const context = useContext(xyzContext);
 
   const handleClick = () => {
     console.log("click contador Bisnieto");
-    setcount(count + 1);
+    context.setCount(context.count + 1);
   };
 
   //did update
-  useEffect(() => {
-  });
+  useEffect(() => {});
 
   return (
     <div className="BisNieto">
       <p>BisNieto</p>
       <button onClick={handleClick}>click</button>
       <hr />
-      <span>{count}</span>
+      <span>{context.count}</span>
     </div>
   );
 };
