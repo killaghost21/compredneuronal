@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Select } from "react-select-tile";
+import { globalContext } from "./Context";
 
-const Selector = ({ teams }) => {
+const Selector = ({ teams, id }) => {
+  const context = useContext(globalContext);
+
   let options = teams.map((team) => {
     return { value: team.full_name, label: team.full_name };
   });
@@ -10,7 +13,10 @@ const Selector = ({ teams }) => {
 
   const handleItemClick = (value) => {
     setValue(value);
-    // console.log(`Option selected:`, value);
+    context.setState({
+      ...context.state,
+      selector: { ...context.state.selector, [id]: value },
+    });
   };
 
   return (

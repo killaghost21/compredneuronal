@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,6 +7,7 @@ import Selector from "./Selector";
 import Button from "@material-ui/core/Button";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { globalContext } from "./Context";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -26,18 +27,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PrincipalSection = ({ teams }) => {
+  const context = useContext(globalContext);
+
   const classes = useStyles();
 
   const predecir = () => {
-    // Swal.fire({
-    //   title: "Resultado!",
-    //   icon: "success",
-    //   html:
-    //     "<h2>Posible ganador: lakers</h2>" +
-    //     "<p>Probabilidades <b>Lakers: 90%</b></p>" +
-    //     "<p>Probabilidades <b>Bulls: 10%</b></p>",
-    //   confirmButtonText: "ok",
-    // });
+    axios
+      .post("http://localhost:5001/games", {
+        team1: context.state.selector.selector_1,
+        team2: context.state.selector.selector_2,
+      })
+      .then(function (response) {
+        Swal.fire({
+          title: "Resultado!",
+          icon: "success",
+          html:
+            `<h2>Posible ganador: ???</h2>` +
+            `<p>Probabilidades <b>${context.state.selector.selector_1}: ??%</b></p>` +
+            `<p>Probabilidades <b>${context.state.selector.selector_2}: ??%</b></p>`,
+          confirmButtonText: "ok",
+        });
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   return (
@@ -56,13 +69,23 @@ const PrincipalSection = ({ teams }) => {
         <div>
           <Grid container spacing={2} justify="center">
             <Grid item xs={6}>
-              <Selector teams={teams} />
+              <Selector teams={teams} id="selector_1" />
             </Grid>
             <Grid item xs={6}>
-              <Selector teams={teams} />
+              <Selector teams={teams} id="selector_2" />
             </Grid>
             <Grid container justify="center">
-              <Button variant="contained" color="primary" onClick={predecir}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={predecir}
+                disabled={
+                  context.state.selector.selector_1 &&
+                  context.state.selector.selector_2
+                    ? false
+                    : true
+                }
+              >
                 Predecir Ganador
               </Button>
             </Grid>

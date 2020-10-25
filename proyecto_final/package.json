@@ -10,7 +10,7 @@
 
     "all-install": "concurrently \"npm run root-dependencies\" \"npm run server-dependencies\" \"npm run client-dependencies\"",
 
-    "server": "node ./server/index.js ",
+    "server": "nodemon ./server/index.js ",
     "client": "npm start --prefix client",
     
     "dev": "concurrently \"npm run server\" \"npm run client\""

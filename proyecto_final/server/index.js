@@ -14,8 +14,26 @@ const port = 5001;
 let games = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded()); // to support URL-encoded bodies
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
 
-app.get("/", (req, res) => {
+  app.options('*', (req, res) => {
+      // allowed XHR methods  
+      res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS');
+      res.send();
+  });
+});
+
+app.post("/games", (req, res) => {
+  let team1 = req.body.team1,
+    team2 = req.body.team2;
+  console.log(team1, team2);
+
+
   let promisesArray = [];
 
   for (let i = 1; i < 4; i++) {

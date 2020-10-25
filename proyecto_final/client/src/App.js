@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "./components/Layout";
-import PapaObserverPattern from "./components/observerPattern/Papa";
-import PapaContextApi from "./components/contextApi/Papa";
+import { globalContext } from "./components/Context";
+import "./App.css"
 
 const App = () => {
+  const [state, setState] = useState({ selector: {} });
+
+  useEffect(() => {
+    console.log("globalState: ",state);
+  });
   return (
-    <div>
-      {/* <Layout /> */}
-      <PapaObserverPattern />
-      <PapaContextApi />
-    </div>
+    <globalContext.Provider value={{ state, setState }}>
+      <div className="layout">
+        <Layout />
+      </div>
+    </globalContext.Provider>
   );
 };
 
