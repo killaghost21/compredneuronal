@@ -1,12 +1,14 @@
 import React from "react";
 import Layout from "./components/Layout";
-import Padre from "./components/hijoPadre/Papa";
+import PapaObserverPattern from "./components/observerPattern/Papa";
+import PapaContextApi from "./components/contextApi/Papa";
 
 const App = () => {
   return (
     <div>
       {/* <Layout /> */}
-      <Padre />
+      <PapaObserverPattern />
+      <PapaContextApi />
     </div>
   );
 };

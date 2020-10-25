@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PubSub from "pubsub-js";
 
 const BisNieto = () => {
   const [count, setcount] = useState(0);
@@ -11,7 +10,6 @@ const BisNieto = () => {
 
   //did update
   useEffect(() => {
-    PubSub.publish("contador", count);
   });
 
   return (
