@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "./components/Layout";
-import Padre from "./components/hooksEjemplo/Papa";
+import Padre from "./components/hijoPadre/Papa";
 
 const App = () => {
   return (
