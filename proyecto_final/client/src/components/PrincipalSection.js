@@ -32,12 +32,15 @@ const PrincipalSection = ({ teams }) => {
   const classes = useStyles();
 
   const predecir = () => {
+    context.setState({ ...context.state, spinner: true });
     axios
       .post("http://localhost:5001/games", {
         team1: context.state.selector.selector_1,
         team2: context.state.selector.selector_2,
+        key: process.env.REACT_APP_API_KEY,
       })
       .then(function (response) {
+        context.setState({ ...context.state, spinner: false });
         Swal.fire({
           title: "Resultado!",
           icon: "success",
@@ -47,6 +50,7 @@ const PrincipalSection = ({ teams }) => {
             `<p>Probabilidades <b>${context.state.selector.selector_2}: ??%</b></p>`,
           confirmButtonText: "ok",
         });
+        console.log(response.data);
       })
       .catch(function (error) {
         console.error(error);

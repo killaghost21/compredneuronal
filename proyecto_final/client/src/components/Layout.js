@@ -29,7 +29,7 @@ const Layout = () => {
         .then(function (response) {
           console.log(response.data);
           setTeams(response.data);
-          localStorage.setItem("teams", JSON.stringify(response.data));// guarda como string
+          localStorage.setItem("teams", JSON.stringify(response.data)); // guarda como string
           setDataLoad(true);
         })
         .catch(function (error) {

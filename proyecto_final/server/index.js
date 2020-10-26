@@ -12,44 +12,51 @@ var unirest = require("unirest");
 const app = express();
 const port = 5001;
 let games = [];
+let gamesFilter = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 
-  app.options('*', (req, res) => {
-      // allowed XHR methods  
-      res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS');
-      res.send();
+  app.options("*", (req, res) => {
+    // allowed XHR methods
+    // allowed XHR methods
+    // allowed XHR methods
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, PATCH, PUT, POST, DELETE, OPTIONS"
+    );
+    res.send();
   });
 });
 
 app.post("/games", (req, res) => {
   let team1 = req.body.team1,
-    team2 = req.body.team2;
-  console.log(team1, team2);
-
+    team2 = req.body.team2,
+    key = req.body.key;
 
   let promisesArray = [];
 
-  for (let i = 1; i < 4; i++) {
+  for (let i = 1; i < 30; i++) {
     promisesArray.push(
       new Promise((resolve, reject) => {
         let req = unirest("GET", "https://rapidapi.p.rapidapi.com/games");
 
         req.query({
           page: i,
-          per_page: 50,
+          per_page: 100,
         });
 
         req.headers({
           "x-rapidapi-host": "free-nba.p.rapidapi.com",
-          "x-rapidapi-key":
-            "...",//TODO: falta key
+          "x-rapidapi-key": key,
           useQueryString: true,
         });
 
@@ -65,13 +72,26 @@ app.post("/games", (req, res) => {
   }
   if (games.length === 0) {
     Promise.all(promisesArray).then((promisesResponse) => {
+      //get games play for team1 and team2
+
       games = promisesResponse.map((promise) => {
+        promise.data.map((game) => {
+          let home_team = game.home_team.full_name;
+          let visitor_team = game.visitor_team.full_name;
+          if (
+            (home_team === team1 && visitor_team == team2) ||
+            (home_team === team2 && visitor_team == team1)
+          ) {
+            gamesFilter.push(game);
+          }
+        });
         return { ...promise.data };
       });
-      res.send({ responses: games });
+
+      res.send({ filterGames: gamesFilter, games: games });
     });
   } else {
-    res.send({ responses: games });
+    res.send({ filterGames: gamesFilter, games: games });
   }
 });
 
