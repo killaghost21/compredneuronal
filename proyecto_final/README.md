@@ -1,17 +1,16 @@
 # proyecto final
 
-- in this folder run:
+* in this folder run:
 
-`npm run all-install`
+ `npm i && npm run all-install`
+* then:
 
-- next:
-
-`npm run dev`
-
-- next:
+ `npm run dev`
+* then:
 
 in the client folder add `.env.local` file
 and add the next lines:
-```
+
+``` 
 REACT_APP_API_KEY=your_rapidapi_key
 ```
