@@ -14,7 +14,7 @@ const App = () => {
     <globalContext.Provider value={{ state, setState }}>
       <div className="layout">
         <Layout />
-        <Spinner show={state.spinner} />
+        {state.spinner && <Spinner show={state.spinner} />}
       </div>
     </globalContext.Provider>
   );

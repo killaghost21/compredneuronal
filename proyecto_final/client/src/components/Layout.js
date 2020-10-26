@@ -5,6 +5,7 @@ import Header from "./Header";
 import PrincipalSection from "./PrincipalSection";
 import SecundarySection from "./SecundarySection";
 import axios from "axios";
+import Spinner from "./Spinner";
 
 const Layout = () => {
   const [teams, setTeams] = useState({});
@@ -43,8 +44,8 @@ const Layout = () => {
       <CssBaseline />
       <Header />
       <main>
-        {isDataLoad ? <PrincipalSection teams={teams.data} /> : "loading"}
-        {isDataLoad ? <SecundarySection teams={teams.data} /> : "loading"}
+        {isDataLoad ? <PrincipalSection teams={teams.data} /> : <Spinner />}
+        {isDataLoad ? <SecundarySection teams={teams.data} /> : <Spinner />}
       </main>
       <Footer />
     </React.Fragment>

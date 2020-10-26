@@ -43,34 +43,33 @@ app.post("/games", (req, res) => {
     key = req.body.key;
 
   let promisesArray = [];
-
-  for (let i = 1; i < 30; i++) {
-    promisesArray.push(
-      new Promise((resolve, reject) => {
-        let req = unirest("GET", "https://rapidapi.p.rapidapi.com/games");
-
-        req.query({
-          page: i,
-          per_page: 100,
-        });
-
-        req.headers({
-          "x-rapidapi-host": "free-nba.p.rapidapi.com",
-          "x-rapidapi-key": key,
-          useQueryString: true,
-        });
-
-        req.end(function (res) {
-          if (res.error) {
-            reject(res.error);
-            throw new Error(res.error);
-          }
-          resolve(res.body);
-        });
-      })
-    );
-  }
   if (games.length === 0) {
+    for (let i = 1; i < 30; i++) {
+      promisesArray.push(
+        new Promise((resolve, reject) => {
+          let req = unirest("GET", "https://rapidapi.p.rapidapi.com/games");
+
+          req.query({
+            page: i,
+            per_page: 100,
+          });
+
+          req.headers({
+            "x-rapidapi-host": "free-nba.p.rapidapi.com",
+            "x-rapidapi-key": key,
+            useQueryString: true,
+          });
+
+          req.end(function (res) {
+            if (res.error) {
+              reject(res.error);
+              throw new Error(res.error);
+            }
+            resolve(res.body);
+          });
+        })
+      );
+    }
     Promise.all(promisesArray).then((promisesResponse) => {
       //get games play for team1 and team2
 

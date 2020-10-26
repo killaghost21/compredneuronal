@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#000000b8",
     borderRadius: "40px",
   },
+  heroButton: {
+    backgroundColor: "#607d8b",
+    borderRadius: "10px",
+  },
   heroButtons: {
     marginTop: theme.spacing(4),
   },
@@ -79,19 +83,23 @@ const PrincipalSection = ({ teams }) => {
               <Selector teams={teams} id="selector_2" />
             </Grid>
             <Grid container justify="center">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={predecir}
-                disabled={
-                  context.state.selector.selector_1 &&
-                  context.state.selector.selector_2
-                    ? false
-                    : true
-                }
-              >
-                Predecir Ganador
-              </Button>
+              <div className={classes.heroButton}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={predecir}
+                  disabled={
+                    context.state.selector.selector_1 &&
+                    context.state.selector.selector_2 &&
+                    context.state.selector.selector_1 !==
+                      context.state.selector.selector_2
+                      ? false
+                      : true
+                  }
+                >
+                  Predecir Ganador
+                </Button>
+              </div>
             </Grid>
           </Grid>
         </div>
