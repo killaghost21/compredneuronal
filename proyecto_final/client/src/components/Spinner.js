@@ -12,7 +12,7 @@ const Spinner = () => {
       backgroundColor: "#607d8bb0",
       position: "fixed",
       top: "0px",
-      zIndex: "100",
+      zIndex: "999999",
     },
     count: {
       height: "100vh",
@@ -22,7 +22,7 @@ const Spinner = () => {
       alignItems: "center",
       position: "fixed",
       top: "0px",
-      zIndex: "100",
+      zIndex: "99999",
     },
   };
   const [seconds, setSeconds] = useState(0);
