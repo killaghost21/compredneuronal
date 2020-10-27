@@ -7,6 +7,8 @@ import Selector from "./Selector";
 import Button from "@material-ui/core/Button";
 import Swal from "sweetalert2";
 import axios from "axios";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
 import { globalContext } from "./Context";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,17 +43,21 @@ const PrincipalSection = ({ teams }) => {
       .post("http://localhost:5001/games", {
         team1: context.state.selector.selector_1,
         team2: context.state.selector.selector_2,
-        key: process.env.REACT_APP_API_KEY,
       })
       .then(function (response) {
         context.setState({ ...context.state, spinner: false });
+        const highlightedCode = hljs.highlightAuto(
+          JSON.stringify(response.data.gamesByTeams, null, 2)
+        ).value;
+
         Swal.fire({
           title: "Resultado!",
           icon: "success",
           html:
-            `<h2>Posible ganador: ???</h2>` +
-            `<p>Probabilidades <b>${context.state.selector.selector_1}: ??%</b></p>` +
-            `<p>Probabilidades <b>${context.state.selector.selector_2}: ??%</b></p>`,
+            `<h2>Posible ganador: <span>??</span></h2>` +
+            `<p>Probabilidades <b>${context.state.selector.selector_1}: <span>??</span>%</b></p>` +
+            `<p>Probabilidades <b>${context.state.selector.selector_2}: <span>??</span>%</b></p>` +
+            `<div class="code"><pre><code class="html">${highlightedCode}</code></pre></div>`,
           confirmButtonText: "ok",
         });
         console.log(response.data);

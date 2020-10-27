@@ -1,3 +1,12 @@
 .layout {
   background-color: #1c1c1c;
 }
+
+.code {
+  background-color: #1c1c1c;
+  text-align: left;
+  font-size: 10px;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 200px;
+}
