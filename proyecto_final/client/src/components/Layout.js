@@ -11,32 +11,14 @@ const Layout = () => {
   const [teams, setTeams] = useState({});
   const [isDataLoad, setDataLoad] = useState(false);
 
+  const callTeams = async () => {
+    let response = await axios.get("http://localhost:5001/teams");
+    setTeams(response.data.teams);
+    setDataLoad(true);
+  };
+
   useEffect(() => {
-    const options = {
-      method: "GET",
-      url: "https://rapidapi.p.rapidapi.com/teams",
-      params: { page: "0" },
-      headers: {
-        "x-rapidapi-host": "free-nba.p.rapidapi.com",
-        "x-rapidapi-key": process.env.REACT_APP_API_KEY,
-      },
-    };
-    if (localStorage.getItem("teams")) {
-      setTeams(JSON.parse(localStorage.getItem("teams")));
-      setDataLoad(true);
-    } else {
-      axios
-        .request(options)
-        .then(function (response) {
-          console.log(response.data);
-          setTeams(response.data);
-          localStorage.setItem("teams", JSON.stringify(response.data)); // guarda como string
-          setDataLoad(true);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }
+    callTeams();
   }, []);
 
   return (

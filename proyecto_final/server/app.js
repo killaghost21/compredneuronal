@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const axios = require("axios");
-require('dotenv').config();
+const chalk = require("chalk");
+require("dotenv").config();
 
 const port = 5001;
 var bodyParser = require("body-parser");
@@ -30,8 +31,8 @@ app.use((req, res, next) => {
 });
 
 //instance axios
-const instance = axios.create({
-  timeout: 30000,
+const freeNbaInstance = axios.create({
+  timeout: 15000,
   headers: {
     "x-rapidapi-host": "free-nba.p.rapidapi.com",
     "x-rapidapi-key": process.env.API_KEY,
@@ -58,22 +59,24 @@ app.post("/games", (req, res) => {
   let team1 = req.body.team1;
   let team2 = req.body.team2;
 
-  gamesDB = manageDB.getByName("games"); //read DB
-
-  //generate array of promises to paginate
-  let promisesArray = [];
-  for (let i = 1; i < 20; i++) {
-    promisesArray.push(
-      instance.get("https://rapidapi.p.rapidapi.com/games", {
-        params: {
-          page: i,
-          per_page: 100,
-        },
-      })
-    );
-  }
+  gamesDB = manageDB.getByName("games"); //read games from DB
 
   if (!gamesDB) {
+    console.log(chalk.red.inverse("get games from API"));
+
+    //generate array of promises to paginate
+    let promisesArray = [];
+    for (let i = 1; i < 20; i++) {
+      promisesArray.push(
+        freeNbaInstance.get("https://rapidapi.p.rapidapi.com/games", {
+          params: {
+            page: i,
+            per_page: 100,
+          },
+        })
+      );
+    }
+
     // read all promises at same time
     Promise.all(promisesArray).then(function (results) {
       // save all results in array
@@ -88,6 +91,8 @@ app.post("/games", (req, res) => {
       });
     });
   } else {
+    console.log(chalk.blue.inverse("get games from DB"));
+
     res.send({
       gamesByTeams: gamesByTeams(gamesDB, team1, team2),
       games: gamesDB,
@@ -95,10 +100,25 @@ app.post("/games", (req, res) => {
   }
 });
 
+app.get("/teams", async (req, res) => {
+  teamsDB = manageDB.getByName("teams"); //read teams from DB
+
+  if (!teamsDB) {
+    console.log(chalk.red.inverse("get teams from API"));
+    //get promise using async/await
+    result = await freeNbaInstance.get("https://rapidapi.p.rapidapi.com/teams");
+    manageDB.setDB("teams", result.data); //save in database (JSON)
+    res.send({ teams: result.data });
+  } else {
+    console.log(chalk.blue.inverse("get teams from DB"));
+    //get data from DB
+    res.send({ teams: teamsDB });
+  }
+});
+
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
 });
-
 
 // cuando le al boton predecir ,
 // debe capturar los nombres de los dos equipos
