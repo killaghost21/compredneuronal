@@ -2,33 +2,12 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const chalk = require("chalk");
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
 const manageDB = require("./database");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
 
 const port = 5001;
-// Extended: https://swagger.io/specification/#infoObject
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      version: "1.0.0",
-      title: "Apuestas NBA API",
-      description: "Prediccion de Apuestas NBA",
-      contact: {
-        name: "dev",
-      },
-      servers: ["http://localhost:${port}", "http://localhost:games${port}"],
-    },
-  },
-  // ['.routes/*.js']
-  apis: ["app.js"],
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
@@ -126,16 +105,6 @@ app.post("/games", (req, res) => {
   }
 });
 
-// Routes
-/**
- * @swagger
- * /games:
- *  get:
- *    description: Use to request all customers
- *    responses:
- *      '200':
- *        description: A successful response
- */
 app.get("/teams", async (req, res) => {
   teamsDB = manageDB.getByName("teams"); //read teams from DB
 
