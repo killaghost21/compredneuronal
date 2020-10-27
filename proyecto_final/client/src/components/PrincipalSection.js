@@ -40,10 +40,14 @@ const PrincipalSection = ({ teams }) => {
   const predecir = () => {
     context.setState({ ...context.state, spinner: true });
     axios
-      .post("http://localhost:5001/games", {
-        team1: context.state.selector.selector_1,
-        team2: context.state.selector.selector_2,
-      })
+      .post(
+        "http://localhost:5001/games",
+        {
+          team1: context.state.selector.selector_1,
+          team2: context.state.selector.selector_2,
+        },
+        { timeout: "20000" }
+      )
       .then(function (response) {
         context.setState({ ...context.state, spinner: false });
         const highlightedCode = hljs.highlightAuto(
@@ -63,7 +67,13 @@ const PrincipalSection = ({ teams }) => {
         console.log(response.data);
       })
       .catch(function (error) {
-        console.error(error);
+        context.setState({ ...context.state, spinner: false });
+        Swal.fire({
+          title: "Error!",
+          icon: "error",
+          html: `<p><b>detail: <span>${error.message}</span></b></p>`,
+          confirmButtonText: "ok",
+        });
       });
   };
 

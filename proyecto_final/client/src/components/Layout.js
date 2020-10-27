@@ -26,8 +26,8 @@ const Layout = () => {
       <CssBaseline />
       <Header />
       <main>
-        {isDataLoad ? <PrincipalSection teams={teams.data} /> : <Spinner />}
-        {isDataLoad ? <SecundarySection teams={teams.data} /> : <Spinner />}
+        {isDataLoad ? <PrincipalSection teams={teams} /> : <Spinner />}
+        {isDataLoad ? <SecundarySection teams={teams} /> : <Spinner />}
       </main>
       <Footer />
     </React.Fragment>

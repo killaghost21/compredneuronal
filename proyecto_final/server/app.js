@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 
 //instance axios
 const freeNbaInstance = axios.create({
-  timeout: 15000,
+  timeout: 20000,
   headers: {
     "x-rapidapi-host": "free-nba.p.rapidapi.com",
     "x-rapidapi-key": process.env.API_KEY,
@@ -107,13 +107,19 @@ app.get("/teams", async (req, res) => {
     console.log(chalk.red.inverse("get teams from API"));
     //get promise using async/await
     result = await freeNbaInstance.get("https://rapidapi.p.rapidapi.com/teams");
-    manageDB.setDB("teams", result.data); //save in database (JSON)
-    res.send({ teams: result.data });
+    manageDB.setDB("teams", result.data.data); //save in database (JSON)
+    res.send({ teams: result.data.data });
   } else {
     console.log(chalk.blue.inverse("get teams from DB"));
     //get data from DB
     res.send({ teams: teamsDB });
   }
+});
+
+app.get("/clean-db", (req, res) => {
+  console.log(chalk.yellow.inverse("cleanDB"));
+  manageDB.updateDB(["games","teams"]); //save in database (JSON)
+  res.send({ message: "clean DB ok" });
 });
 
 app.listen(port, () => {

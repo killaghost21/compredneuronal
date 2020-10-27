@@ -6,7 +6,7 @@ const db = low(adapter);
 
 const setDefaultDB = () => {
   // Set some defaults (required if your JSON file is empty)
-  db.defaults({ posts: [], user: {}, count: 0 }).write();
+  db.defaults({ games: [], teams: [] }).write();
 };
 exports.getByName = (name) => {
   return db.get(name).value();
@@ -19,7 +19,8 @@ const addToDB = () => {
   // Add a post
   db.get("posts").push({ id: 1, title: "lowdb is awesome" }).write();
 };
-const updateDB = () => {
-  // Increment count
-  db.update("count", (n) => n + 1).write();
+exports.updateDB = (names) => {
+  names.map((name) => {
+    db.set(name, null).write();
+  });
 };
