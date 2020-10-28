@@ -2,15 +2,18 @@
 
 * in this folder run:
 
- `npm i && npm run all-install`
+ `npm i`
+* then:
+
+ `npm run all-install`
 * then:
 
  `npm run dev`
 * then:
 
-in the client folder add `.env.local` file
+in the server folder add `.env` file
 and add the next lines:
 
 ``` 
-REACT_APP_API_KEY=your_rapidapi_key
+API_KEY=your_rapidapi_key
 ```
