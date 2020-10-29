@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const chalk = require("chalk");
-const manageDB = require("./database");
 const bodyParser = require("body-parser");
+const manageDB = require("./database");
+const ml = require("./ml");
 
 require("dotenv").config();
 
@@ -44,8 +45,11 @@ const freeNbaInstance = axios.create({
   },
 });
 
-const gamesByTeams = (games, team1, team2) => {
-  let res = [];
+const filterGames = (games, team1, team2) => {
+  let gamesByTeams = [];
+  let winners = [];
+  let competingTeams = [];
+
   games.map((game) => {
     let home_team = game.home_team.full_name;
     let visitor_team = game.visitor_team.full_name;
@@ -53,13 +57,25 @@ const gamesByTeams = (games, team1, team2) => {
       (home_team === team1 && visitor_team == team2) ||
       (home_team === team2 && visitor_team == team1)
     ) {
-      res.push(game);
+      competingTeams.push([game.home_team.name, game.visitor_team.name]);
+      winners.push(
+        game.home_team_score > game.visitor_team_score
+          ? game.home_team.name
+          : game.visitor_team.name
+      );
+      gamesByTeams.push(game);
     }
   });
-  return res;
+
+  return {
+    gamesByTeams: gamesByTeams,
+    competingTeams: competingTeams,
+    winners: winners,
+    finalWinner: ml.predict(competingTeams, winners),
+  };
 };
 
-app.post("/games", (req, res) => {
+app.post("/games", async (req, res) => {
   // get json params
   let team1 = req.body.team1;
   let team2 = req.body.team2;
@@ -71,7 +87,7 @@ app.post("/games", (req, res) => {
 
     //generate array of promises to paginate
     let promisesArray = [];
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < 21; i++) {
       promisesArray.push(
         freeNbaInstance.get("https://rapidapi.p.rapidapi.com/games", {
           params: {
@@ -82,24 +98,36 @@ app.post("/games", (req, res) => {
       );
     }
 
-    // read all promises at same time
-    Promise.all(promisesArray).then(function (results) {
-      // save all results in array
-      let games = [];
-      results.forEach((element) => {
-        games.push(...element.data.data);
-      });
-      manageDB.setDB("games", games); //save in database (JSON)
-      res.send({
-        gamesByTeams: gamesByTeams(games, team1, team2),
-        games: games,
-      });
+    const results = await Promise.all(
+      promisesArray.map((p) => p.catch((e) => e))
+    );
+    const validResults = results.filter((result) => !(result instanceof Error));
+
+    // save all results in array
+    let games = [];
+    validResults.forEach((element) => {
+      element.data.data && games.push(...element.data.data);
     });
+
+    let gamesFilter = filterGames(games, team1, team2);
+    res.send({
+      gamesByTeams: gamesFilter.gamesByTeams,
+      competingTeams: gamesFilter.competingTeams,
+      winners: gamesFilter.winners,
+      finalWinner: gamesFilter.finalWinner,
+      mlInfo: manageDB.getByName("mlInfo"),
+      games: games,
+    });
+    manageDB.setDB("games", games); //save in database (JSON)
   } else {
     console.log(chalk.blue.inverse("get games from DB"));
-
+    let gamesFilter = filterGames(gamesDB, team1, team2);
     res.send({
-      gamesByTeams: gamesByTeams(gamesDB, team1, team2),
+      gamesByTeams: gamesFilter.gamesByTeams,
+      competingTeams: gamesFilter.competingTeams,
+      winners: gamesFilter.winners,
+      finalWinner: gamesFilter.finalWinner,
+      mlInfo: manageDB.getByName("mlInfo"),
       games: gamesDB,
     });
   }
@@ -112,8 +140,8 @@ app.get("/teams", async (req, res) => {
     console.log(chalk.yellow.inverse("get teams from API"));
     //get promise using async/await
     result = await freeNbaInstance.get("https://rapidapi.p.rapidapi.com/teams");
-    manageDB.setDB("teams", result.data.data); //save in database (JSON)
     res.send({ teams: result.data.data });
+    manageDB.setDB("teams", result.data.data); //save in database (JSON)
   } else {
     console.log(chalk.blue.inverse("get teams from DB"));
     //get data from DB

@@ -51,16 +51,26 @@ const PrincipalSection = ({ teams }) => {
       .then(function (response) {
         context.setState({ ...context.state, spinner: false });
         const highlightedCode = hljs.highlightAuto(
-          JSON.stringify(response.data.gamesByTeams, null, 2)
+          JSON.stringify(
+            {
+              competingTeams: response.data.competingTeams,
+              winners: response.data.winners,
+              finalWinner: response.data.finalWinner,
+              mlInfo: response.data.mlInfo,
+              gamesByTeams: response.data.gamesByTeams,
+            },
+            null,
+            2
+          )
         ).value;
 
         Swal.fire({
           title: "Resultado!",
           icon: "success",
           html:
-            `<h2>Posible ganador: <span>??</span></h2>` +
-            `<p>Probabilidades <b>${context.state.selector.selector_1}: <span>??</span>%</b></p>` +
-            `<p>Probabilidades <b>${context.state.selector.selector_2}: <span>??</span>%</b></p>` +
+            `<h2>Posible ganador: <span>${response.data.finalWinner}</span></h2>` +
+            `<p>Equipo 1: <b>${context.state.selector.selector_1}<span></span></b></p>` +
+            `<p>Equipo 2: <b>${context.state.selector.selector_2}<span></span></b></p>` +
             `<div class="code"><pre><code class="html">${highlightedCode}</code></pre></div>`,
           confirmButtonText: "ok",
         });
